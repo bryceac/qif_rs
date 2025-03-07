@@ -3,6 +3,7 @@ use std::{fmt, io::{self, Read, Write }, fs::File};
 use crate::{ Section, Type, Transaction };
 
 /// A structure that represents a QIF document.
+#[derive(Debug, PartialEq)]
 pub struct QIF {
     pub cash: Option<Section>,
     pub bank: Option<Section>,
