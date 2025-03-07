@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, io::{self, Read}, fs::File};
 
 use crate::{ Section, Type, Transaction };
 
@@ -106,10 +106,24 @@ impl QIF {
             },
         }
     }
+
+    pub fn load_from_file(p: &str) -> Result<Self, String> {
+        match file_contents_from(p) {
+            Ok(content) => Ok(Self::from_str(&content)),
+            Err(error) => Err(format!("{}", error))
+        }
+    }
 }
 
 fn remove_whitespace(s: &str) -> String {
     s.chars().filter(|c| !c.is_whitespace()).collect()
+}
+
+fn file_contents_from(f: &str) -> Result<String, io::Error> {
+    let mut file_contents = String::default();
+    File::open(f)?.read_to_string(&mut file_contents)?;
+
+    Ok(file_contents)
 }
 
 impl fmt::Display for QIF {
