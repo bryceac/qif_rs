@@ -22,6 +22,7 @@ mod tests {
 
     use super::*;
     use chrono::prelude::*;
+    use pretty_assertions::assert_eq;
 
     #[test]
     fn qif_type_outputs_to_correct_string() {
