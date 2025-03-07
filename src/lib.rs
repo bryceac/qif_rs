@@ -592,9 +592,7 @@ mod tests {
 
         let qif = QIF::from_str(&text);
 
-        if let Some(bank) = qif.bank {
-            assert_eq!(bank, expected_section)
-        }
+        assert_eq!(qif.bank.unwrap(), expected_section)
     }
 
     #[test]
