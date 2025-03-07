@@ -30,9 +30,8 @@ impl Section {
     pub fn from_str(s: &str) -> Option<Self> {
         let mut builder = Section::builder();
         
-        builder.set_type(&extract_type_from(s));
+        builder.set_type(&extract_type(s));
         
-
         if let Ok(transaction) = Transaction::from_str(s) {
             builder.add_transaction(transaction);
         }
@@ -47,6 +46,22 @@ impl Section {
     }
 }
 
+fn retrieve_first_line(s: &str) -> String {
+    let lines: Vec<&str> = s.lines().collect();
+
+    lines[0].to_owned()
+}
+
+fn extract_type(s: &str) -> String {
+    if s.starts_with("!Type:") {
+        let components: Vec<String> = retrieve_first_line(s).split(":").map(|s| s.to_owned()).collect();
+
+        components[1].clone()
+    } else {
+        String::default()
+    }
+}
+
 impl fmt::Display for Section {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.to_string())
@@ -57,28 +72,6 @@ impl PartialEq for Section {
     fn eq(&self, other: &Self) -> bool {
         self.qif_type == other.qif_type &&
         self.transactions == other.transactions
-    }
-}
-
-fn retrieve_first_line(s: &str) -> String {
-    let lines: Vec<&str> = s.lines().collect();
-    
-    if !lines.is_empty() {
-        lines[0].to_owned()
-    } else {
-        String::default()
-    }
-}
-
-fn extract_type_from(s: &str) -> String {
-    let first_line = retrieve_first_line(s);
-
-    if first_line.starts_with("!Type:") {
-        let pieces: Vec<String> = first_line.split(":").map(|s| s.to_owned()).collect();
-    
-        pieces[1].clone()
-    } else {
-        String::default()
     }
 }
 
