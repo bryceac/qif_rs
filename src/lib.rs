@@ -458,7 +458,7 @@ mod tests {
         let today = Local::now();
         let format = DateFormat::MonthDayFullYear;
 
-        let text = format!("!Type:{}\r\nD{}\r\nT{:.2}\r\nC{}\r\nN{}\r\nP{}\r\nM{}\r\nA{}\r\nL{}\r\n^",
+        let text = format!("!Type:{}\r\nD{}\r\nT{:.2}\r\nC{}\r\nN{}\r\nP{}\r\nM{}\r\nA{}\r\nL{}\r\n^\r\n",
         "Bank",
         today.format(format.chrono_str()).to_string(),
         500.0,
