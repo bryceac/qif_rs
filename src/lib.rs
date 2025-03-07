@@ -469,7 +469,7 @@ mod tests {
         "Sam Hill Credit Union",
         "Opening Balance");
 
-        if let Ok(expected_transaction) = Transaction::builder()
+        let expected_transaction = Transaction::builder()
         .set_date(&today.format(format.chrono_str()).to_string(), &format)
         .set_check_number(1260)
         .set_vendor("Sam Hill Credit Union")
@@ -478,16 +478,16 @@ mod tests {
         .set_amount(500.0)
         .set_memo("Open Account")
         .set_status("*")
-        .build() {
-            if let Some(expected_section) = Section::builder()
+        .build().unwrap();
+
+        let expected_section = Section::builder()
             .set_type("Bank")
             .add_transaction(expected_transaction)
-            .build() {
-                if let Some(section) = Section::from_str(&text) {
-                    assert_eq!(expected_section, section)
-                }
-            }
-        }
+            .build().unwrap();
+
+        let section = Section::from_str(&text).unwrap();
+            
+        assert_eq!(expected_section, section)
     }
 
     #[test]
