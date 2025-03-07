@@ -1,4 +1,4 @@
-use std::{fmt, io::{self, Read}, fs::File};
+use std::{fmt, io::{self, Read, Write }, fs::File};
 
 use crate::{ Section, Type, Transaction };
 
