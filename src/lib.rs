@@ -684,8 +684,7 @@ mod tests {
         .set_field(bank_section)
         .build();
 
-        if let Ok(retrieved_qif) = QIF::load_from_file("test.qif") {
-            assert_eq!(retrieved_qif, qif)
-        }
+        let retrieved_qif = QIF::load_from_file("test.qif");
+        assert_eq!(retrieved_qif.unwrap(), qif)
     }
 }
