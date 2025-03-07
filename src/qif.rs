@@ -113,6 +113,15 @@ impl QIF {
             Err(error) => Err(format!("{}", error))
         }
     }
+
+    pub fn save(&self, p: &str) -> Result<(), io::Error> {
+        let mut output = File::create(p)?;
+
+        match write!(output, "{}", format!("{}", self.to_string())) {
+            Ok(()) => Ok(()),
+            Err(error) => Err(error)
+        }
+    }
 }
 
 fn remove_whitespace(s: &str) -> String {
