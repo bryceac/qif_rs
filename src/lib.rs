@@ -590,9 +590,13 @@ mod tests {
         "Velociraptor Entertainment",
         "");
 
+        let expected_qif = QIF::builder()
+        .set_field(expected_section)
+        .build();
+
         let qif = QIF::from_str(&text);
 
-        assert_eq!(qif.bank.unwrap(), expected_section)
+        assert_eq!(qif, expected_qif)
     }
 
     #[test]
