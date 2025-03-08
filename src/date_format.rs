@@ -1,4 +1,4 @@
-/// a conveniece enumeration to reduce chrono based input and output.
+/// a conveniece enumeration to deal with chrono based input and output.
 pub enum DateFormat {
     MonthDayFullYear,
     MonthDayShortYear,

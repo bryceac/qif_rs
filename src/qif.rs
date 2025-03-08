@@ -13,6 +13,15 @@ pub struct QIF {
 }
 
 impl QIF {
+    /**
+     * method that can be used to create a QIF object.
+     * 
+     * Objects can be created like this:
+     * 
+     * let expected_qif = QIF::builder()
+        .set_field(expected_section)
+        .build();
+     */
     pub fn builder() -> QIFBuilder {
         QIFBuilder::new()
     }

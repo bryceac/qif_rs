@@ -9,6 +9,9 @@ pub struct Split {
 }
 
 impl Split {
+    /** method to create a split. 
+     * This exists mostly as a convenience initializer, but can be used directly
+    */
     pub fn from(category: Option<String>, memo: String, amount: f64) -> Self {
         Split { 
             category, 
@@ -17,6 +20,18 @@ impl Split {
         }
     }
 
+    /**
+     * builder method to easily create sections.
+     * Amount, memo, and categories are all set via respective setter methods.
+     * 
+     * Usage would look like this:
+     * 
+     * let initial_split = Split::builder()
+        .set_category("Opening Balance")
+        .set_memo("Initial Deposit")
+        .set_amount(450.0)
+        .build().unwrap();
+     */
     pub fn builder() -> SplitBuilder {
         SplitBuilder::new()
     }

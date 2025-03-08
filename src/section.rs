@@ -13,6 +13,18 @@ pub struct Section {
 }
 
 impl Section {
+    /**
+     * builder method use to create a QIF section.
+     * 
+     * The creation is done like this:
+     * 
+     * let expected_section = Section::builder()
+        .set_type("Bank")
+        .add_transaction(sam_hill)
+        .add_transaction(fake_street)
+        .add_transaction(velociraptor_entertainment)
+        .build().unwrap();
+     */
     pub fn builder() -> SectionBuilder {
         SectionBuilder::new()
     }
