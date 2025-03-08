@@ -384,9 +384,6 @@ impl TransactionBuilder {
         .add_split(initial_split)
         .add_split(bonus_split)
         .build().unwrap();
-
-     * The address setter is optional because vendor 
-     * can also be listed the address.
      */
     pub fn build(&self) -> Result<Transaction, TransactionBuildingError> {
         if let Some(date) = self.date {
