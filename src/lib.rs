@@ -526,7 +526,7 @@ mod tests {
     }
 
     #[test]
-    fn parse_qif() {
+    fn parse_qif_with_one_section() {
         let today = Local::now();
         let format = DateFormat::MonthDayFullYear;
 
@@ -592,6 +592,87 @@ mod tests {
 
         let expected_qif = QIF::builder()
         .set_field(expected_section)
+        .build();
+
+        let qif = QIF::from_str(&text);
+
+        assert_eq!(qif, expected_qif)
+    }
+
+    #[test]
+    fn parse_qif_with_multiple_sections_() {
+        let today = Local::now();
+        let format = DateFormat::MonthDayFullYear;
+
+        let sam_hill = Transaction::builder()
+        .set_date(&today.format(format.chrono_str()).to_string(), &format)
+        .set_check_number(1260)
+        .set_vendor("Sam Hill Credit Union")
+        .set_address("Sam Hill Credit Union")
+        .set_category("Opening Balance")
+        .set_amount(500.0)
+        .set_memo("Open Account")
+        .set_status("*")
+        .build().unwrap();
+
+        let fake_street = Transaction::builder()
+        .set_date(&today.format(format.chrono_str()).to_string(), &format)
+        .set_vendor("Fake Street Electronics")
+        .set_category("Gifts")
+        .set_amount(-200.0)
+        .set_memo("Headset")
+        .build().unwrap();
+
+        let velociraptor_entertainment = Transaction::builder()
+        .set_date(&today.format(format.chrono_str()).to_string(), &format)
+        .set_vendor("Velociraptor Entertainent")
+        .set_amount(50000.0)
+        .set_memo("Pay Day")
+        .build().unwrap();
+
+        let expected_bank_section = Section::builder()
+        .set_type("Bank")
+        .add_transaction(sam_hill)
+        .add_transaction(velociraptor_entertainment)
+        .build().unwrap();
+
+        let expected_credit_card_section = Section::builder()
+        .set_type("CCard")
+        .add_transaction(fake_street)
+        .build().unwrap();
+
+        let text = format!("!Type:{}\r\nD{}\r\nT{:.2}\r\nC{}\r\nN{}\r\nP{}\r\nM{}\r\nA{}\r\nL{}\r\n^\r\n\r\n!Type:{}\r\nD{}\r\nT{:.2}\r\nC{}\r\nN{}\r\nP{}\r\nM{}\r\nA{}\r\nL{}\r\n^\r\n\r\n!Type:{}\r\nD{}\r\nT{:.2}\r\nC{}\r\nN{}\r\nP{}\r\nM{}\r\nA{}\r\nL{}\r\n^\r\n\r\n",
+        "Bank",
+        today.format(format.chrono_str()).to_string(),
+        500.0,
+        "*",
+        1260,
+        "Sam Hill Credit Union",
+        "Open Account",
+        "Sam Hill Credit Union",
+        "Opening Balance",
+        "CCard",
+        today.format(format.chrono_str()).to_string(),
+        -200.0,
+        "",
+        0,
+        "Fake Street Electronics",
+        "Headset",
+        "Fake Street Electronics",
+        "Gifts",
+        "Bank",
+        today.format(format.chrono_str()).to_string(),
+        50000.0,
+        "",
+        0,
+        "Velociraptor Entertainent",
+        "Pay Day",
+        "Velociraptor Entertainent",
+        "");
+
+        let expected_qif = QIF::builder()
+        .set_field(expected_bank_section)
+        .set_field(expected_credit_card_section)
         .build();
 
         let qif = QIF::from_str(&text);
