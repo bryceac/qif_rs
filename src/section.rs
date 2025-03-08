@@ -1,4 +1,5 @@
 use std::fmt;
+use regex::Regex;
 
 use crate::{Type, Transaction};
 
@@ -46,17 +47,15 @@ impl Section {
     }
 }
 
-fn retrieve_first_line(s: &str) -> String {
-    let lines: Vec<&str> = s.lines().collect();
-
-    lines[0].to_owned()
-}
-
 fn extract_type(s: &str) -> String {
-    if s.starts_with("!Type:") {
-        let components: Vec<String> = retrieve_first_line(s).split(":").map(|s| s.to_owned()).collect();
+    if let Ok(regex) = Regex::new("!type:([A-Z|a-z]{4,9})") {
+        if let Some(captures) = regex.captures(s) {
+            let (_, [account_type]) = captures.extract();
 
-        components[1].clone()
+            account_type.to_string()
+        } else {
+            String::default()
+        }
     } else {
         String::default()
     }
