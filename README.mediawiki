@@ -99,3 +99,133 @@ this library with the macOS GUI application.</p>
 </dl>
 </li>
 </ol>
+
+===Usage===
+
+While this library cannot yet be used by Carho directly, 
+in the simple manner most crates can be used, 
+you should be able to import it via Cargo like this:
+
+<pre>
+qif = { git = "https://github.com/bryceac/qif_rs" }
+</pre>
+
+or
+
+<pre>
+qif = { git = "https://github.com/bryceac/qif_rs", branch = "main" }
+</pre>
+
+====Reading====
+
+To read a file, you would do something like this:
+
+<pre>
+use qif::QIF;
+
+let qif = QIF::load_from_file("path/to/qif");
+
+if let Some(bank) = qif.bank {
+    println!("{}", bank)
+}
+</pre>
+
+This will attempt to read a file and 
+display details regarding bank transactions.
+
+====Writing to File====
+
+To write QIF data to a file, you would do something like this:
+
+<pre>
+use qif::{ QIF, Section, Transaction };
+
+fn main() {
+...
+let bank_section = Section::builder()
+        .set_type("Bank")
+        .add_transaction(sam_hill)
+        .add_transaction(fake_street)
+        .add_transaction(velociraptor_entertainment)
+        .build().unwrap();
+
+let qif = QIF::builder()
+        .set_field(bank_section)
+        .build();
+
+qif.save("path/to/qif").unwrap();
+}
+</pre>
+
+This will take the bank transactions and save them to a QIF file.
+
+====Creating a Transaction====
+
+Transactions can be created like this:
+
+<pre>
+use qif::Transaction;
+
+fn main() {
+let today = Local::now();
+
+let format = DateFormat::MonthDayFullYear;
+
+let transaction = Transaction::builder()
+    .set_date(&today.format(format.chrono_str()).to_string(), &format)
+    .set_check_number(1260)
+    .set_vendor("Sam Hill Credit Union")
+    .set_address("Sam Hill Credit Union")
+    .set_category("Opening Balance")
+    .set_amount(500.0)
+    .set_memo("Open Account")
+    .set_status("*")
+    .build();
+}
+</pre>
+
+The date format above is optional, 
+but it provides a convenience factor in that it houses some default
+schemes for chrono formats. The example provided above 
+uses the MM/DD/YYYY format, and the status denotes it as reconciled.
+
+====Creating a Split====
+
+Splits can be created like this:
+
+<pre>
+use qif::Split;
+
+fn main() {
+let split = Split::builder()
+    .set_category("Opening Balance")
+    .set_memo("Bonus for new Account")
+    .set_amount(50.0)
+    .build();
+}
+</pre>
+
+By substiting out <strong>set_amount</strong> for 
+<strong>set_amount_via_percentage</strong>, 
+you can have the calculations done for you, 
+but you must also pass the original transaction's amount to the function.
+
+Splits are then added to transactions like this:
+
+<pre>
+use qif::{Split, Transaction };
+
+fn main() {
+    let transaction = Transaction::builder()
+    .set_date(&today.format(format.chrono_str()).to_string(), &format)
+    .set_check_number(1260)
+    .set_vendor("Sam Hill Credit Union")
+    .set_address("Sam Hill Credit Union")
+    .set_category("Opening Balance")
+    .set_amount(500.0)
+    .set_memo("Open Account")
+    .set_status("*")
+    .add_split(split)
+    .build();
+}
+</pre>
