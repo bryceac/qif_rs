@@ -369,21 +369,6 @@ impl TransactionBuilder {
      * this function is used to actually create the transaction.
      * It will return an error if there is no date, vendor, or amount
      * provided, which are all set with the respective setter methods.
-     * 
-     * Usage will look like this:
-     * 
-     * let transaction = Transaction::builder()
-        .set_date(&today.format(format.chrono_str()).to_string(), &format)
-        .set_check_number(1260)
-        .set_vendor("Sam Hill Credit Union")
-        .set_address("Sam Hill Credit Union")
-        .set_category("Opening Balance")
-        .set_amount(500.0)
-        .set_memo("Open Account")
-        .set_status("*")
-        .add_split(initial_split)
-        .add_split(bonus_split)
-        .build().unwrap();
      */
     pub fn build(&self) -> Result<Transaction, TransactionBuildingError> {
         if let Some(date) = self.date {
