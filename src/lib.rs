@@ -18,6 +18,7 @@ pub use section::Section as Section;
 pub use section::SectionBuilder as SectionBuilder;
 pub use date_format::DateFormat as DateFormat;
 pub use qif::QIF as QIF;
+pub use errors::TransactionBuildingError as TransactionBuildingError;
 
 #[cfg(test)]
 mod tests {
