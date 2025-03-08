@@ -62,10 +62,10 @@ impl Transaction {
         TransactionBuilder::new()
     }
 
-    pub fn to_string(&self) -> String {
+    pub fn to_string(&self, df: &DateFormat) -> String {
         if self.splits.is_empty() {
             format!("D{}\r\nT{:.2}\r\nC{}\r\nN{}\r\nP{}\r\nM{}\r\nA{}\r\nL{}\r\n^", 
-                self.date.format("%m/%d/%Y"),
+                self.date.format(df.chrono_str()),
                 self.amount,
                 if let Some(status) = &self.status {
                     status.to_str()
@@ -126,7 +126,7 @@ impl Transaction {
         }
     }
 
-    pub fn from_str(s: &str) -> Result<Self, TransactionBuildingError> {
+    pub fn from_str(s: &str, df: &DateFormat) -> Result<Self, TransactionBuildingError> {
         let lines = s.lines();
         let mut builder = Transaction::builder();
         let mut split_builders: Vec<SplitBuilder> = vec![];
@@ -134,7 +134,7 @@ impl Transaction {
         for line in lines {
             match line {
                 content if content.starts_with("D") => {
-                    builder.set_date(&drop_first_character_from(content), &DateFormat::MonthDayFullYear);
+                    builder.set_date(&drop_first_character_from(content), df);
                 },
                 content if content.starts_with("T") || content.starts_with("U") => if let Ok(amount) = drop_first_character_from(content).parse::<f64>() {
                     builder.set_amount(amount);
@@ -231,7 +231,7 @@ impl Transaction {
 
 impl fmt::Display for Transaction {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(f, "{}", self.to_string(&DateFormat::MonthDayFullYear))
     }
 }
 

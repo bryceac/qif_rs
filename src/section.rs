@@ -1,7 +1,7 @@
 use std::fmt;
 use regex::Regex;
 
-use crate::{Type, Transaction};
+use crate::{Type, Transaction, DateFormat};
 
 /** 
  * structure that houses the type and transactions in a QIF file 
@@ -29,23 +29,23 @@ impl Section {
         SectionBuilder::new()
     }
 
-    pub fn to_string(&self) -> String {
+    pub fn to_string(&self, df: &DateFormat) -> String {
         let mut content = format!("!Type:{}\r\n", self.qif_type.to_str());
 
         for transaction in self.transactions.clone() {
-            let transaction_string = format!("{}\r\n\r\n", transaction.to_string());
+            let transaction_string = format!("{}\r\n\r\n", transaction.to_string(df));
             content.push_str(&transaction_string);
         }
 
         content
     }
 
-    pub fn from_str(s: &str) -> Option<Self> {
+    pub fn from_str(s: &str, df: &DateFormat) -> Option<Self> {
         let mut builder = Section::builder();
         
         builder.set_type(&extract_type(s));
         
-        if let Ok(transaction) = Transaction::from_str(s) {
+        if let Ok(transaction) = Transaction::from_str(s, df) {
             builder.add_transaction(transaction);
         }
 
@@ -75,7 +75,7 @@ fn extract_type(s: &str) -> String {
 
 impl fmt::Display for Section {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(f, "{}", self.to_string(&DateFormat::MonthDayFullYear))
     }
 }
 

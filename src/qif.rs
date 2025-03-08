@@ -1,6 +1,6 @@
 use std::{fmt, io::{self, Read, Write }, fs::File};
 
-use crate::{ Section, Type, Transaction };
+use crate::{ Section, Type, Transaction, DateFormat };
 
 /// A structure that represents a QIF document.
 #[derive(Debug, PartialEq)]
@@ -26,33 +26,33 @@ impl QIF {
         QIFBuilder::new()
     }
 
-    pub fn to_string(&self) -> String {
+    pub fn to_string(&self, df: &DateFormat) -> String {
         let mut content = String::default();
 
         if self.cash.is_some() {
-            content.push_str(&self.field_to_string(Type::Cash));
+            content.push_str(&self.field_to_string(Type::Cash, df));
         }
         
         if self.bank.is_some() {
-            content.push_str(&self.field_to_string(Type::Bank));
+            content.push_str(&self.field_to_string(Type::Bank, df));
         }
 
         if self.credit_card.is_some() {
-            content.push_str(&self.field_to_string(Type::CreditCard));
+            content.push_str(&self.field_to_string(Type::CreditCard, df));
         }
         
         if self.liability.is_some() {
-            content.push_str(&self.field_to_string(Type::Liability));
+            content.push_str(&self.field_to_string(Type::Liability, df));
         }
         
         if self.asset.is_some() {
-            content.push_str(&self.field_to_string(Type::Asset));
+            content.push_str(&self.field_to_string(Type::Asset, df));
         }
 
         content
     }
 
-    pub fn from_str(s: &str) -> QIF {
+    pub fn from_str(s: &str, df: &DateFormat) -> QIF {
         let mut builder = QIF::builder();
 
         let blocks: Vec<&str> = s.split("^").collect();
@@ -60,7 +60,7 @@ impl QIF {
         let mut current_section: Option<Section> = None;
 
         for block in blocks {
-            if let Some(section) = Section::from_str(&block) {
+            if let Some(section) = Section::from_str(&block, df) {
                 if !builder.update_field(section.clone()) {
                     builder.set_field(section.clone());
                 }
@@ -72,7 +72,7 @@ impl QIF {
                     Type::Liability => builder.liability.clone(),
                     Type::Asset => builder.asset.clone(),
                 };
-            } else if let Ok(transaction) = Transaction::from_str(&block) {
+            } else if let Ok(transaction) = Transaction::from_str(&block, df) {
                 if let Some(mut current) = current_section.clone() {
                     current.add_transaction_if_not_exists(&transaction);
 
@@ -84,47 +84,47 @@ impl QIF {
         builder.build()
     }
 
-    fn field_to_string(&self, field: Type) -> String {
+    fn field_to_string(&self, field: Type, df: &DateFormat) -> String {
         match  field {
             Type::Cash => if let Some(cash) = self.cash.clone() {
-                cash.to_string()
+                cash.to_string(df)
             } else {
                 String::default()
             },
             Type::Bank => if let Some(bank) = self.bank.clone() {
-                bank.to_string()
+                bank.to_string(df)
             } else {
                 String::default()
             },
             Type::CreditCard => if let Some(credit_card) = self.credit_card.clone() {
-                credit_card.to_string()
+                credit_card.to_string(df)
             } else {
                 String::default()
             },
             Type::Liability => if let Some(liability) = self.liability.clone() {
-                liability.to_string()
+                liability.to_string(df)
             } else {
                 String::default()
             },
             Type::Asset => if let Some(asset) = self.asset.clone() {
-                asset.to_string()
+                asset.to_string(df)
             } else {
                 String::default()
             },
         }
     }
 
-    pub fn load_from_file(p: &str) -> Result<Self, String> {
+    pub fn load_from_file(p: &str, df: &DateFormat) -> Result<Self, String> {
         match file_contents_from(p) {
-            Ok(content) => Ok(Self::from_str(&content)),
+            Ok(content) => Ok(Self::from_str(&content, df)),
             Err(error) => Err(format!("{}", error))
         }
     }
 
-    pub fn save(&self, p: &str) -> Result<(), io::Error> {
+    pub fn save(&self, p: &str, df: &DateFormat) -> Result<(), io::Error> {
         let mut output = File::create(p)?;
 
-        match write!(output, "{}", format!("{}", self.to_string())) {
+        match write!(output, "{}", format!("{}", self.to_string(df))) {
             Ok(()) => Ok(()),
             Err(error) => Err(error)
         }
@@ -140,7 +140,7 @@ fn file_contents_from(f: &str) -> Result<String, io::Error> {
 
 impl fmt::Display for QIF {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(f, "{}", self.to_string(&DateFormat::MonthDayFullYear))
     }
 }
 

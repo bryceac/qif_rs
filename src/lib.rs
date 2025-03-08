@@ -173,7 +173,7 @@ mod tests {
         .build();
 
         if let Ok(transaction) = transaction {
-            assert_eq!(transaction.to_string(), expected);
+            assert_eq!(transaction.to_string(&format), expected);
         }
     }
 
@@ -202,7 +202,7 @@ mod tests {
                 "Sam Hill Credit Union",
                 "Opening Balance");
 
-                if let Ok(transaction) = Transaction::from_str(&text) {
+                if let Ok(transaction) = Transaction::from_str(&text, &format) {
                     assert_eq!(expected_transaction, transaction)
                 } 
         }
@@ -265,7 +265,7 @@ mod tests {
         "Bonus for new Account",
         50.0);
 
-        if let Ok(transaction) = Transaction::from_str(&text) {
+        if let Ok(transaction) = Transaction::from_str(&text, &format) {
             assert_eq!(transaction, expected_transaction)
         }
 
@@ -307,7 +307,7 @@ mod tests {
         "Bonus for new Account",
         10);
 
-        if let Ok(transaction) = Transaction::from_str(&text) {
+        if let Ok(transaction) = Transaction::from_str(&text, &format) {
             assert_eq!(transaction, expected_transaction)
         }
 
@@ -349,7 +349,7 @@ mod tests {
         .add_split(split)
         .build().unwrap();
 
-        assert_eq!(expected, transaction.to_string())
+        assert_eq!(expected, transaction.to_string(&format))
     }
 
     #[test]
@@ -398,7 +398,7 @@ mod tests {
         "Bonus for new Account",
         50.0);
 
-        if let Ok(transaction) = Transaction::from_str(&text) {
+        if let Ok(transaction) = Transaction::from_str(&text, &format) {
             assert_eq!(transaction, expected_transaction)
         }
 
@@ -450,7 +450,7 @@ mod tests {
         .add_split(bonus_split)
         .build().unwrap();
 
-        assert_eq!(expected, transaction.to_string())
+        assert_eq!(expected, transaction.to_string(&format))
     }
 
     #[test]
@@ -485,7 +485,7 @@ mod tests {
             .add_transaction(expected_transaction)
             .build().unwrap();
 
-        let section = Section::from_str(&text).unwrap();
+        let section = Section::from_str(&text, &format).unwrap();
             
         assert_eq!(expected_section, section)
     }
@@ -520,7 +520,7 @@ mod tests {
             .set_type("Bank")
             .add_transaction(transaction)
             .build() {
-                assert_eq!(expected_text, section.to_string())
+                assert_eq!(expected_text, section.to_string(&format))
             }
         }
     }
@@ -594,7 +594,7 @@ mod tests {
         .set_field(expected_section)
         .build();
 
-        let qif = QIF::from_str(&text);
+        let qif = QIF::from_str(&text, &format);
 
         assert_eq!(qif, expected_qif)
     }
@@ -675,7 +675,7 @@ mod tests {
         .set_field(expected_credit_card_section)
         .build();
 
-        let qif = QIF::from_str(&text);
+        let qif = QIF::from_str(&text, &format);
 
         assert_eq!(qif, expected_qif)
     }
@@ -722,6 +722,6 @@ mod tests {
         .set_field(bank_section)
         .build();
 
-        assert!(qif.save("test.qif").is_ok())
+        assert!(qif.save("test.qif", &format).is_ok())
     }
 }
