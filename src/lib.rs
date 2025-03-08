@@ -22,8 +22,6 @@ pub use errors::TransactionBuildingError as TransactionBuildingError;
 
 #[cfg(test)]
 mod tests {
-    use crate::errors::TransactionBuildingError;
-
     use super::*;
     use chrono::prelude::*;
     use pretty_assertions::assert_eq;
