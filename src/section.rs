@@ -48,7 +48,7 @@ impl Section {
 }
 
 fn extract_type(s: &str) -> String {
-    if let Ok(regex) = Regex::new("!type:([A-Z|a-z]{4,9})") {
+    if let Ok(regex) = Regex::new("!Type:([A-Z|a-z]{4,9})") {
         if let Some(captures) = regex.captures(s) {
             let (_, [account_type]) = captures.extract();
 
