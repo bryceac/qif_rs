@@ -123,10 +123,14 @@ To read a file, you would do something like this:
 <pre>
 use qif::QIF;
 
-let qif = QIF::load_from_file("path/to/qif");
+fn main() {
+let format = Date::DateFormat::MonthDayFullYear;
+
+let qif = QIF::load_from_file("path/to/qif", &format);
 
 if let Some(bank) = qif.bank {
     println!("{}", bank)
+}
 }
 </pre>
 
