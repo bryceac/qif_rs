@@ -146,6 +146,7 @@ use qif::{ QIF, Section, Transaction };
 
 fn main() {
 ...
+let format = Date::DateFormat::MonthDayFullYear;
 let bank_section = Section::builder()
         .set_type("Bank")
         .add_transaction(sam_hill)
@@ -157,7 +158,7 @@ let qif = QIF::builder()
         .set_field(bank_section)
         .build();
 
-qif.save("path/to/qif").unwrap();
+qif.save("path/to/qif", &format).unwrap();
 }
 </pre>
 
