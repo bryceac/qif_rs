@@ -575,7 +575,7 @@ mod tests {
         "Opening Balance",
         today.format(format.chrono_str()).to_string(),
         -200.0,
-        "*",
+        "",
         0,
         "Fake Street Electronics",
         "Headset",
@@ -583,11 +583,11 @@ mod tests {
         "Gifts",
         today.format(format.chrono_str()).to_string(),
         50000.0,
-        "*",
+        "",
         0,
-        "Velociraptor Entertainment",
+        "Velociraptor Entertainent",
         "Pay Day",
-        "Velociraptor Entertainment",
+        "Velociraptor Entertainent",
         "");
 
         let expected_qif = QIF::builder()

@@ -48,12 +48,9 @@ impl QIF {
 
         let blocks: Vec<&str> = s.split("^").collect();
 
-        let blocks_without_whitespace: Vec<String> = blocks.iter()
-        .map(|&s| remove_whitespace(s)).collect();
-
         let mut current_section: Option<Section> = None;
 
-        for block in blocks_without_whitespace {
+        for block in blocks {
             if let Some(section) = Section::from_str(&block) {
                 if !builder.update_field(section.clone()) {
                     builder.set_field(section.clone());
@@ -123,10 +120,6 @@ impl QIF {
             Err(error) => Err(error)
         }
     }
-}
-
-fn remove_whitespace(s: &str) -> String {
-    s.chars().filter(|c| !c.is_whitespace()).collect()
 }
 
 fn file_contents_from(f: &str) -> Result<String, io::Error> {
