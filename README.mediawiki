@@ -1,0 +1,16 @@
+=QIF=
+
+<dl>
+<dt style="font-weight:bold">Version</dt>
+<dd>0.1</dd>
+<dt style="font-weight:bold">Author</dt>
+<dd>Bryce Campbell</dd>
+<dt style="font-weight:bold">License</dt>
+<dd>see LICENSE</dd>
+<dt style="font-weight:bold">Description</dt>
+<dd>
+<p>A rust port of 
+<a href="https://github.com/bryceac/QIF">my Swift Library</a> 
+that can read and write QIF files</p>
+</dd>
+</dl>
