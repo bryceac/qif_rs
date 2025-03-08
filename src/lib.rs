@@ -10,9 +10,12 @@ mod qif;
 // expose structures and enums for simple usage
 pub use qif_type::QIFType as Type;
 pub use transaction::Transaction as Transaction;
+pub use transaction::TransactionBuilder as TransactionBuilder;
 pub use transaction_status::TransactionStatus as TransactionStatus;
 pub use split::Split as Split;
+pub use split::SplitBuilder as SplitBuilder;
 pub use section::Section as Section;
+pub use section::SectionBuilder as SectionBuilder;
 pub use date_format::DateFormat as DateFormat;
 pub use qif::QIF as QIF;
 
