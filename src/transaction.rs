@@ -1,6 +1,6 @@
 use chrono::prelude::*;
 
-use crate::{TransactionStatus, Split, DateFormat, errors::{ TransactionBuildingError}, SplitBuilder};
+use crate::{TransactionStatus, Split, DateFormat, TransactionBuildingError, SplitBuilder};
 
 use std::fmt;
 use unicode_segmentation::UnicodeSegmentation;
