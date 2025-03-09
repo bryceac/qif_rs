@@ -17,7 +17,7 @@ that can read and write QIF files</p>
 
 ==Notes==
 
-This project was created with the aim of bringing QIF support 
+This crate was created with the aim of bringing QIF support 
 to the <a href="https://github.com/bryceac/rcheckbook">CLI version</a>
 of <a href="https://github.com/bryceac/BCheckbook">BCheckbook</a>.
 
@@ -226,3 +226,22 @@ fn main() {
     .build();
 }
 </pre>
+
+===Contributing===
+
+If you think you can help out making this even better, 
+feel free to fork this project and make a pull request.
+
+Please keep in mind that I may refuse the request, 
+but if things work as they should, then I will likely accept it.
+
+===Support===
+
+While I have been writing more Rust code than Swift these days, 
+I still do not think I can provide too much support, 
+so you should expect to be on your own.
+
+However, I am willing to check things out, 
+so feel free to contact me at the email below:
+
+tonyhawk2100@gmail.com
