@@ -102,18 +102,10 @@ this library with the macOS GUI application.</p>
 
 ===Usage===
 
-While this library cannot yet be used by Carho directly, 
-in the simple manner most crates can be used, 
-you should be able to import it via Cargo like this:
+To utilize this crate, add either of the following to Cargo.toml:
 
 <pre>
-qif = { git = "https://github.com/bryceac/qif_rs" }
-</pre>
-
-or
-
-<pre>
-qif = { git = "https://github.com/bryceac/qif_rs", branch = "main" }
+qif = "0.1"
 </pre>
 
 ====Reading====
