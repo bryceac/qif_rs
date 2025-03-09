@@ -21,8 +21,8 @@ This project was created with the aim of bringing QIF support
 to the <a href="https://github.com/bryceac/rcheckbook">CLI version</a>
 of <a href="https://github.com/bryceac/BCheckbook">BCheckbook</a>.
 
-It is currently a <abbr title="work in progress">WIP</abbr>, 
-but it should be ready for usage.
+It has been tested on Rust 1.84.1 on macOS 15.3, 
+though it should work on other platforms just fine.
 
 ===Limits===
 
