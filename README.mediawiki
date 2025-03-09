@@ -24,6 +24,13 @@ of <a href="https://github.com/bryceac/BCheckbook">BCheckbook</a>.
 It has been tested on Rust 1.84.1 on macOS 15.3, 
 though it should work on other platforms just fine.
 
+===Version History===
+
+<dl>
+<dt style="font-weight:bold">0.1</dt>
+<dd>initial release.</dd>
+</dl>
+
 ===Limits===
 
 Like the original library I wrote in Swift, 
