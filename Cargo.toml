@@ -4,10 +4,10 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 description = "library that can read and write QIF (Quicken Interchange File)."
-homepage = "https://gthub.com/bryceac/qif_rs"
+homepage = "https://github.com/bryceac/qif_rs"
 readme = "README.mediawiki"
 repository = "https://github.com/bryceac/qif_rs"
-keywords = ["qif", "qicken", "files", "parsing", "reading"]
+keywords = ["qif", "quicken", "files", "parsing", "reading"]
 
 [dependencies]
 chrono = "0.4.40"
